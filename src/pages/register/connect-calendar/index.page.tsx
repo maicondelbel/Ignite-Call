@@ -12,17 +12,14 @@ export default function ConnectCalendar() {
   const session = useSession()
 
   useEffect(() => {
-    window.addEventListener('beforeunload', (ev) => {
-      ev.preventDefault()
-      return ev.returnValue
-    })
-
-    return () => {
-      window.removeEventListener('beforeunload', (ev) => {
-        ev.preventDefault()
-        return ev.returnValue
-      })
+    const unloadCallback = (event: any) => {
+      event.preventDefault()
+      event.returnValue = ''
+      return ''
     }
+
+    window.addEventListener('beforeunload', unloadCallback)
+    return () => window.removeEventListener('beforeunload', unloadCallback)
   }, [])
 
   const hasAuthError = !!router.query.error
