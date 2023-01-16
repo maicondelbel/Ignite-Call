@@ -11,11 +11,6 @@ export default function ConnectCalendar() {
   const router = useRouter()
   const session = useSession()
 
-  window.addEventListener('beforeunload', (ev) => {
-    ev.preventDefault()
-    return ev.returnValue
-  })
-
   useEffect(() => {
     window.addEventListener('beforeunload', (ev) => {
       ev.preventDefault()
