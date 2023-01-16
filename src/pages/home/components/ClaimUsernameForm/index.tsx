@@ -42,7 +42,7 @@ export function ClaimUsernameForm() {
           placeholder="seu-usuario"
           {...register('username')}
         />
-        <Button size="sm" type="submit" disabled={isSubmitting}>
+        <Button size="md" type="submit" disabled={isSubmitting}>
           Reservar
           <ArrowRight />
         </Button>
