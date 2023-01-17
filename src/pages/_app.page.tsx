@@ -6,6 +6,7 @@ import { globalStyles } from './../styles/global'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '../lib/react-query'
 import { DefaultSeo } from 'next-seo'
+import { ToastContextProvider } from '../contexts/ToastContext'
 
 globalStyles()
 
@@ -15,16 +16,18 @@ export default function App({
 }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider session={session}>
-        <DefaultSeo
-          openGraph={{
-            type: 'website',
-            locale: 'pt_BR',
-            siteName: 'Ignite | Ignite Call',
-          }}
-        />
-        <Component {...pageProps} />
-      </SessionProvider>
+      <ToastContextProvider>
+        <SessionProvider session={session}>
+          <DefaultSeo
+            openGraph={{
+              type: 'website',
+              locale: 'pt_BR',
+              siteName: 'Ignite | Ignite Call',
+            }}
+          />
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ToastContextProvider>
     </QueryClientProvider>
   )
 }

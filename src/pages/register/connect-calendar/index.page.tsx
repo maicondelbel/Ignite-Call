@@ -1,32 +1,24 @@
 import { Heading, Text, MultiStep, Button } from '@ratex-ui/react'
 import { Container, Form, Header } from '../styles'
 import { ArrowRight, Check } from 'phosphor-react'
-import { ConnectBox, RegisterValidationError } from './styles'
-import { signIn, useSession } from 'next-auth/react'
+import { ConnectBox, LogoutBox, RegisterValidationError } from './styles'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
-import { useEffect } from 'react'
 
 export default function ConnectCalendar() {
   const router = useRouter()
   const session = useSession()
-
-  useEffect(() => {
-    const unloadCallback = (event: any) => {
-      event.preventDefault()
-      event.returnValue = ''
-      return ''
-    }
-
-    window.addEventListener('beforeunload', unloadCallback)
-    return () => window.removeEventListener('beforeunload', unloadCallback)
-  }, [])
 
   const hasAuthError = !!router.query.error
   const isAuthenticated = session.status === 'authenticated'
 
   async function handleSignIn() {
     await signIn('google')
+  }
+
+  async function handleSignOut() {
+    await signOut()
   }
 
   async function handleGoToNextStep() {
@@ -70,6 +62,16 @@ export default function ConnectCalendar() {
               Falha ao conectar-se ao Google! Verifique se você concedeu
               permissão de acesso ao Google Calendar
             </RegisterValidationError>
+          )}
+          {isAuthenticated && (
+            <LogoutBox>
+              <Text size={'xxs'}>
+                Conectado como: <span>{session.data?.user.name}</span>
+              </Text>
+              <Text as={'a'} size={'xxs'} onClick={handleSignOut}>
+                Sair?
+              </Text>
+            </LogoutBox>
           )}
           <Button
             type="submit"

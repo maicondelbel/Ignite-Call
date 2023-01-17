@@ -1,4 +1,11 @@
-import { Heading, Text, MultiStep, TextInput, Button } from '@ratex-ui/react'
+import {
+  Heading,
+  Text,
+  MultiStep,
+  TextInput,
+  Button,
+  Toast,
+} from '@ratex-ui/react'
 import { z } from 'zod'
 
 import { AxiosError } from 'axios'
@@ -8,9 +15,10 @@ import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { api } from './../../lib/axios'
 import { NextSeo } from 'next-seo'
+import { ToastContext } from '../../contexts/ToastContext'
 
 const registerFormSchema = z.object({
   username: z
@@ -37,6 +45,9 @@ export default function Register() {
     resolver: zodResolver(registerFormSchema),
   })
 
+  const { setOpenToast, openToast, toastBody, onSetToastBody } =
+    useContext(ToastContext)
+
   const router = useRouter()
 
   useEffect(() => {
@@ -55,9 +66,12 @@ export default function Register() {
       await router.push('/register/connect-calendar')
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data.message) {
-        alert(error.response.data.message)
+        onSetToastBody({
+          title: 'Houve um problema',
+          content: error.response.data.message,
+        })
+        setOpenToast(true)
       }
-      console.log(error)
     }
   }
 
@@ -101,6 +115,12 @@ export default function Register() {
             <ArrowRight />
           </Button>
         </Form>
+        <Toast
+          title={toastBody.title}
+          content={toastBody.content}
+          open={openToast}
+          onOpenChange={setOpenToast}
+        />
       </Container>
     </>
   )

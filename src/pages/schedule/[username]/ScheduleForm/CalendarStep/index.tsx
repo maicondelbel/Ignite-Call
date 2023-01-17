@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query'
 import { X } from 'phosphor-react'
 import { Toast, Tooltip } from '@ratex-ui/react'
 import { ToastContext } from './../../../../../contexts/ToastContext'
+import { Loader } from '../../../../../components/Loader'
 
 interface IAvailability {
   unavailableTimesToSchedule: string[]
@@ -36,7 +37,7 @@ export default function CalendarStep({
   const username = String(router.query.username)
   const formattedDate = dayjs(selectedDate).format('YYYY-MM-DD')
 
-  const { data: availability } = useQuery<IAvailability>(
+  const { data: availability, isLoading } = useQuery<IAvailability>(
     ['availability', formattedDate],
     async () => {
       const response = await api.get(`/users/${username}/availability`, {
@@ -94,6 +95,7 @@ export default function CalendarStep({
             </button>
           </TimePickerHeaderContainer>
           <TimePicker>
+            {isLoading && <Loader />}
             <TimePickerList>
               {availability?.possibleTimesToSchedule.map((hour) => {
                 const isUnavailable =

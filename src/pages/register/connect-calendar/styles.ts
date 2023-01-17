@@ -21,3 +21,26 @@ export const ConnectBox = styled('div', {
 export const RegisterValidationError = styled(Text, {
   color: '#f75a68',
 })
+
+export const LogoutBox = styled('div', {
+  display: 'flex',
+  gap: '$2',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+
+  '> p': {
+    color: '$gray400',
+  },
+
+  a: {
+    color: '$ignite500',
+    padding: '0 $1',
+    fontWeight: '$bold',
+    cursor: 'pointer',
+  },
+
+  span: {
+    fontWeight: '$bold',
+    color: '$gray100',
+  },
+})

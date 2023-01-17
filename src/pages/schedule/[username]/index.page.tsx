@@ -4,7 +4,6 @@ import { Container, ProfileHeader } from './styles'
 import { prisma } from './../../../lib/prisma'
 import ScheduleForm from './ScheduleForm'
 import { NextSeo } from 'next-seo'
-import { ToastContextProvider } from '../../../contexts/ToastContext'
 
 interface IUserProfileProps {
   userProfile: {
@@ -22,16 +21,14 @@ export default function Schedule({ userProfile }: IUserProfileProps) {
         description="Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre."
       />
 
-      <ToastContextProvider>
-        <Container>
-          <ProfileHeader>
-            <Avatar src={userProfile.avatarUrl} />
-            <Heading>{userProfile.name}</Heading>
-            <Text>{userProfile.bio}</Text>
-          </ProfileHeader>
-          <ScheduleForm />
-        </Container>
-      </ToastContextProvider>
+      <Container>
+        <ProfileHeader>
+          <Avatar src={userProfile.avatarUrl} />
+          <Heading>{userProfile.name}</Heading>
+          <Text>{userProfile.bio}</Text>
+        </ProfileHeader>
+        <ScheduleForm />
+      </Container>
     </>
   )
 }
